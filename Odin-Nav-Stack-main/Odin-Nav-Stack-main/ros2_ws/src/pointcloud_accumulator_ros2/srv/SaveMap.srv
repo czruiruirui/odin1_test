@@ -1,0 +1,9 @@
+string filename
+float64 voxel_size
+bool apply_statistical_filter
+---
+bool success
+string message
+string saved_path
+uint64 total_points
+uint64 filtered_points

@@ -1,0 +1,48 @@
+<launch>
+  <!-- Realtime Point Cloud Accumulator Launch -->
+  <!-- 实时点云累积节点 —— 启动即自动累积并发布到 /accumulated_cloud -->
+
+  <!-- 输入点云话题 (Odin1 默认发布 /odin1/cloud_slam) -->
+  <arg name="cloud_topic"       default="/odin1/cloud_slam" />
+  
+  <!-- 目标坐标系 (通常为 map 或 odom) -->
+  <arg name="target_frame"      default="map" />
+  
+  <!-- 保存目录 -->
+  <arg name="save_dir"          default="$(find pcd2pgm)/maps" />
+  
+  <!-- 体素下采样大小 (米)。越大内存占用越小，越稀疏。0.0 表示不体素下采样 -->
+  <arg name="voxel_size"        default="0.05" />
+  
+  <!-- 最大累积点数 (体素数) 上限 -->
+  <arg name="max_points"        default="10000000" />
+  
+  <!-- 是否保存 RGB 颜色 -->
+  <arg name="save_rgb"          default="true" />
+  
+  <!-- PCD 保存格式: true=binary(推荐), false=ascii -->
+  <arg name="pcd_binary"        default="true" />
+  
+  <!-- 发布频率 (Hz) -->
+  <arg name="publish_rate"      default="2.0" />
+  
+  <!-- 是否启动后自动开始累积 -->
+  <arg name="auto_start"        default="true" />
+  
+  <!-- 最大接收帧率 (每秒最多处理多少帧，避免 CPU 过载) -->
+  <arg name="max_frames_per_sec" default="10.0" />
+
+  <node name="realtime_cloud_accumulator" pkg="pointcloud_saver" type="realtime_cloud_accumulator.py" output="screen">
+    <param name="cloud_topic"          value="$(arg cloud_topic)"/>
+    <param name="target_frame"         value="$(arg target_frame)"/>
+    <param name="save_dir"             value="$(arg save_dir)"/>
+    <param name="max_points"           value="$(arg max_points)"/>
+    <param name="voxel_size"           value="$(arg voxel_size)"/>
+    <param name="save_rgb"             value="$(arg save_rgb)"/>
+    <param name="pcd_binary"           value="$(arg pcd_binary)"/>
+    <param name="publish_rate"         value="$(arg publish_rate)"/>
+    <param name="auto_start"           value="$(arg auto_start)"/>
+    <param name="max_frames_per_sec"   value="$(arg max_frames_per_sec)"/>
+  </node>
+
+</launch>
